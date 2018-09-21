@@ -10,9 +10,10 @@ import java.util.ArrayList;
 import br.usjt.ads.arqdes.model.entity.Genero;
 
 public class GeneroDAO {
-	private Genero genero;
+
 	public Genero buscarGenero(int id) throws IOException {
-		String sql = "select nome from GENERO where id=?";
+		Genero genero = null;
+		String sql = "select id, nome from genero where id=?";
 
 		try (Connection conn = ConnectionFactory.getConnection(); 
 				PreparedStatement pst = conn.prepareStatement(sql);) {
@@ -30,7 +31,6 @@ public class GeneroDAO {
 			e.printStackTrace();
 			throw new IOException(e);
 		}
-		
 		return genero;
 	}
 
@@ -54,4 +54,27 @@ public class GeneroDAO {
 		}
 		return generos;
 	}
+	
+	public ArrayList<Genero> buscarGenerosFilmes() throws IOException {
+		ArrayList<Genero> generos = new ArrayList<>();
+		String sql = "select distinct g.id, g.nome, f.id_genero from genero g, filme f where g.id = f.id_genero;";
+
+		try (Connection conn = ConnectionFactory.getConnection();
+				PreparedStatement pst = conn.prepareStatement(sql);
+				ResultSet rs = pst.executeQuery();) {
+
+			while (rs.next()) {
+				Genero genero = new Genero();
+				genero.setId(rs.getInt("g.id"));
+				genero.setNome(rs.getString("g.nome"));
+				generos.add(genero);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IOException(e);
+		}
+		return generos;
+	}
+	
+	
 }

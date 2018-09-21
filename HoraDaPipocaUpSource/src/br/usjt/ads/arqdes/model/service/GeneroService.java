@@ -9,7 +9,7 @@ import br.usjt.ads.arqdes.model.entity.Genero;
 public class GeneroService {
 	private GeneroDAO dao;
 	
-	public GeneroService() throws IOException{
+	public GeneroService() {
 		this.dao = new GeneroDAO();
 	}
 	
@@ -19,6 +19,10 @@ public class GeneroService {
 	
 	public ArrayList<Genero> listarGeneros() throws IOException{
 		return dao.listarGeneros();
+	}
+	
+	public ArrayList<Genero> buscarGenerosFilmes() throws IOException{
+		return dao.buscarGenerosFilmes();
 	}
 
 }
